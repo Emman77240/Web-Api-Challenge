@@ -67,7 +67,7 @@ let questions = [
         correctAnswer: "1. in"
     },
     {
-        question: "What is the use of the <noscript> tag in Javascript?",
+        question: "What is the use of the noscript tag in Javascript?",
         answers: [
             "1. The contents are displayed by non-JS-based browsers",
             "2. Clears all the cookies and cache", 

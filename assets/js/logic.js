@@ -2,6 +2,7 @@
 let start_btn = document.querySelector("#start");
 let choicesList = document.querySelector(".choices");
 let timeCount = document.querySelector(".timer #time");
+let finalScore = document.querySelector("#final-score");
 let feedbackItems = document.querySelector("#feedback");
 let questionText = document.querySelector("#question-title");
 
@@ -70,6 +71,21 @@ function showQuestions(index) {
     } else {
         // Assign feedback to page
         feedbackItems.innerHTML = feedbackTag;
+
+        // Display final score
+        finalScore.innerHTML = userScore;
+
+        // Add score and users initials to local storage
+        function transferHighscore() {
+            let userData = document.getElementById("initials");
+            localStorage.setItem("initials", userData.value);
+            localStorage.setItem("scores", userScore);
+        }
+
+        let submitBtn = document.querySelector("#submit");
+
+        // Add event listener to update local storage with user scores on click
+        submitBtn.addEventListener('click', transferHighscore);
 
         // Hide questions class
         document.getElementById("questions").classList.add("hide");
