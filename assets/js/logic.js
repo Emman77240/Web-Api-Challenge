@@ -1,5 +1,6 @@
 // Select all the required elements from HTML page
 let start_btn = document.querySelector("#start");
+let userData = document.querySelector("#initials");
 let choicesList = document.querySelector(".choices");
 let timeCount = document.querySelector(".timer #time");
 let finalScore = document.querySelector("#final-score");
@@ -7,10 +8,11 @@ let feedbackItems = document.querySelector("#feedback");
 let questionText = document.querySelector("#question-title");
 
 
+let timer;
 let counter;
 let feedbackTag;
 let userScore = 0;
-let timerValue = 100;
+let duration = 100;
 let questionCount = 0;
 
 // If start button clicked
@@ -19,34 +21,32 @@ start_btn.onclick = () => {
     document.getElementById("start-screen").classList.remove("start");
     document.getElementById("start-screen").classList.add("hide");
     
-    // Start timer
-    startTimer(timerValue);
-
     // Show questions
     document.getElementById("questions").classList.remove("hide");
     showQuestions(0);
+
+    // Start timer
+    startTimer(duration);
 }
 
 
-
-
-
-
+// Create timer function
 function startTimer(time) {
-    // Assign value to counter
     counter = setInterval(timer, 1000);
-    
-    // Create timer function
+
     function timer() {
         timeCount.textContent = time;
         time--;
 
+        // Stop timer and end the quiz when time is zero 
         if(time < 0) {
             clearInterval(counter);
+            
+            // Save and display user details to highscore page
+            transferHighscore();
         }
-
+    
     }
-
 }
 
 function showQuestions(index) {
@@ -72,26 +72,8 @@ function showQuestions(index) {
         // Assign feedback to page
         feedbackItems.innerHTML = feedbackTag;
 
-        // Display final score
-        finalScore.innerHTML = userScore;
-
-        // Add score and users initials to local storage
-        function transferHighscore() {
-            let userData = document.getElementById("initials");
-            localStorage.setItem("initials", userData.value);
-            localStorage.setItem("scores", userScore);
-        }
-
-        let submitBtn = document.querySelector("#submit");
-
-        // Add event listener to update local storage with user scores on click
-        submitBtn.addEventListener('click', transferHighscore);
-
-        // Hide questions class
-        document.getElementById("questions").classList.add("hide");
-
-        // Reveal end screen
-        document.getElementById("end-screen").classList.remove("hide");
+        // Save and display user details to highscore page
+        transferHighscore();
 
     }
     
@@ -113,8 +95,16 @@ function selectedChoice(answer) {
         feedbackTag = '<p>Correct!</p>'; 
         
     } else {
-        // Decrease time as penalty and increment question count
-        timerValue -= 10;
+        // Decrease time as penalty 
+        clearInterval(counter);
+        console.log(timeCount.textContent);
+        duration = timeCount.textContent;
+        duration -= 10;
+        
+        // Restart timer
+        startTimer(duration);
+
+        // Increment question count to show next question
         questionCount++;
         showQuestions(questionCount);
        
@@ -130,3 +120,29 @@ function selectedChoice(answer) {
 
 }
 
+
+
+
+
+// Add score and users initials to local storage
+function transferHighscore() {
+    // Display final score
+    finalScore.innerHTML = userScore;
+            
+    // Save user data on local storage
+    localStorage.setItem("initials", userData.value);
+    localStorage.setItem("scores", userScore);
+        
+
+    let submitBtn = document.querySelector("#submit");
+
+    // Add event listener to update local storage with user scores on click
+    submitBtn.addEventListener('click', transferHighscore);
+
+    // Hide questions class
+    document.getElementById("questions").classList.add("hide");
+
+    // Reveal end screen
+    document.getElementById("end-screen").classList.remove("hide");
+
+}
