@@ -159,7 +159,11 @@ function transferHighscore() {
     }
 
     // Add event listener to update local storage with user scores on click
-    submitBtn.addEventListener('click', transferHighscore);
+    submitBtn.addEventListener('click', () => {
+        transferHighscore();
+        location.href = "highscores.html";
+    
+    });
 
     // Hide questions class
     document.getElementById("questions").classList.add("hide");
