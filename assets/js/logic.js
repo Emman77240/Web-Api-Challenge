@@ -1,5 +1,6 @@
 // Select all the required elements from HTML page
 let start_btn = document.querySelector("#start");
+let submitBtn = document.querySelector("#submit");
 let userData = document.querySelector("#initials");
 let choicesList = document.querySelector(".choices");
 let timeCount = document.querySelector(".timer #time");
@@ -13,7 +14,9 @@ let counter;
 let feedbackTag;
 let userScore = 0;
 let duration = 100;
+let scoresArray = [];
 let questionCount = 0;
+
 
 // If start button clicked
 start_btn.onclick = () => {
@@ -129,12 +132,31 @@ function transferHighscore() {
     // Display final score
     finalScore.innerHTML = userScore;
             
-    // Save user data on local storage
-    localStorage.setItem("initials", userData.value);
-    localStorage.setItem("scores", userScore);
-        
+    // Create user object
+    let userObj = {
+        initials: userData.value,
+        scores: userScore
+    }
 
-    let submitBtn = document.querySelector("#submit");
+    // Check local storage for existing data or create new data
+    if(!localStorage.getItem("highscores")) {
+
+        // Add user object to scores array
+        scoresArray.push(userObj);
+
+        // Save scores array to local storage
+        localStorage.setItem("highscores", JSON.stringify(scoresArray));
+    } else {
+        // Set local storage items to scores array
+        scoresArray = JSON.parse(localStorage.getItem("highscores"));
+
+        // Add array object to scores array
+        scoresArray.push(userObj);
+
+        // Re-add scores array to local storage
+        localStorage.setItem("highscores", JSON.stringify(scoresArray));
+
+    }
 
     // Add event listener to update local storage with user scores on click
     submitBtn.addEventListener('click', transferHighscore);
