@@ -8,11 +8,6 @@ In this repository, quiz questions are dynamically added to a HTML page. After a
 
 This website is hosted on GitHub Pages, enabling it to be seen world wide when the website address is visited.
 
-|Header1 |Header2  | Header3|
-|--- | --- | ---|
-|**bold style**| `code block`|data3|
-|\|escape pipe|\`backtick|data13|
-
 ## Installation
 N/A
 
